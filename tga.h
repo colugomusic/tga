@@ -11,6 +11,7 @@
 #include <stdint.h>
 
 #include <cstdio>
+#include <span>
 #include <string>
 #include <vector>
 
@@ -241,6 +242,20 @@ namespace tga {
 
   private:
     FILE* m_file;
+    bool m_ok;
+  };
+
+  class ReadOnlyMemoryFileInterface : public tga::FileInterface {
+  public:
+    ReadOnlyMemoryFileInterface(std::span<const std::byte> bytes);
+    bool ok() const override;
+    size_t tell() override;
+    void seek(size_t absPos) override;
+    uint8_t read8() override;
+    void write8(uint8_t value) override;
+  private:
+    std::span<const std::byte> m_bytes;
+    size_t m_pos;
     bool m_ok;
   };
 

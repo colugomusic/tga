@@ -1,16 +1,13 @@
-# Aseprite TGA Library
-# Copyright (C) 2020-2021  Igara Studio S.A.
-
 project(tga)
-
-# We need C++11 because we use the "override" keyword
-set(CMAKE_CXX_STANDARD 11)
-
-add_library(tga-lib
-  decoder.cpp
-  encoder.cpp
-  image_iterator.cpp
-  stdio.cpp)
-
-set_target_properties(tga-lib PROPERTIES PUBLIC_HEADER "tga.h")
-install(TARGETS tga-lib ARCHIVE DESTINATION lib PUBLIC_HEADER DESTINATION include)
+set(tga-src
+	decoder.cpp
+	encoder.cpp
+	image_iterator.cpp
+	memory.cpp
+	stdio.cpp
+	tga.h
+)
+add_library(tga-lib ${tga-src})
+add_library(tga::tga ALIAS tga-lib)
+target_include_directories(tga-lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+set_property(TARGET tga-lib PROPERTY CXX_STANDARD 20)
